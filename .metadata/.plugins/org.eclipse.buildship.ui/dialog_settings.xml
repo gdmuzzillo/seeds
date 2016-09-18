@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<list key="workingset_selection_history">
+		<item value="CLOUD"/>
+	</list>
+	<section name="org.eclipse.buildship.ui.wizard.project.import">
+		<item value="LOCAL_INSTALLATION" key="gradle_distribution_type"/>
+		<item value="/usr/lib/jvm/java-8-oracle" key="java_home"/>
+		<item value="true" key="apply_working_sets"/>
+		<item value="/home/gustavo/.sdkman/candidates/gradle/current" key="gradle_distribution_configuration"/>
+		<item value="/home/gustavo/projects/seeds/cloud-config" key="project_location"/>
+		<list key="working_sets">
+			<item value="CLOUD"/>
+		</list>
+	</section>
+</section>

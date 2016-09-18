@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: cloud-config
+  cloud:
+    config:
+      env: dev
+      server:
+        bootstrap: true
+        prefix: /config
+        git:
+          uri: https://github.com/redbee/cloud-config
+          username: gdmuzzillo
+          password: Aragorn37365#
+encrypt:
+  key: encryptme
+security:
+  user:
+    password: sarasa

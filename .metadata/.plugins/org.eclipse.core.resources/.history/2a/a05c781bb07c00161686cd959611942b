@@ -1,0 +1,112 @@
+package io.redbee.boot.oauth.config;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
+
+@Configuration
+@EnableAuthorizationServer
+public class OAuth2AuthorizationConfig extends
+AuthorizationServerConfigurerAdapter {
+	
+    @Value("${oauth.redis.enabled}")
+    private Boolean redisEnabled;
+
+    @Value("${oauth.redis.host}")
+    private String redisHost;
+
+    @Value("${oauth.redis.port}")
+    private int redisPort;
+
+
+    @Bean
+    JedisConnectionFactory jedisConnectionFactory() {
+        JedisConnectionFactory factory = new JedisConnectionFactory();
+        factory.setHostName(redisHost);
+        factory.setPort(redisPort);
+        factory.setUsePool(true);
+        return factory;
+    }
+
+    @Autowired
+    Environment environment;
+
+    @Bean
+    public TokenStore tokenStore() {
+        TokenStore result;
+        if (redisEnabled){
+            result = new RedisTokenStore(jedisConnectionFactory());
+        } else {
+            result = new InMemoryTokenStore();
+        }
+
+        return result;
+    }
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Override
+    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+        clients.inMemory()
+                .withClient("finance")
+                .secret("finance").scopes("home")
+                .autoApprove(true)
+                .authorizedGrantTypes("authorization_code", "implicit", "refresh_token", "password")
+                .and()
+                .withClient("branding")
+                .secret("branding").scopes("home")
+                .autoApprove(true)
+                .authorizedGrantTypes("authorization_code", "implicit", "refresh_token", "password")
+                .and()
+                .withClient("media")
+                .secret("media").scopes("home") //TODO: cambiar scope
+                .autoApprove(true)
+                .authorizedGrantTypes("authorization_code", "implicit", "refresh_token", "password")
+                .and()
+                .withClient("adSales")
+                .secret("adSales").scopes("home","convenios")
+                .autoApprove(true)
+                .authorizedGrantTypes("authorization_code","implicit","refresh_token","password")
+                .and()
+                .withClient("programming")
+                .secret("programming").scopes("home") //TODO: cambiar scope
+                .autoApprove(true)
+                .authorizedGrantTypes("authorization_code", "implicit", "refresh_token", "password");
+    }
+
+    @Bean
+    @Primary
+    public DefaultTokenServices tokenServices() {
+        DefaultTokenServices tokenServices = new DefaultTokenServices();
+        tokenServices.setSupportRefreshToken(true);
+        tokenServices.setTokenStore(tokenStore());
+        return tokenServices;
+    }
+
+
+    @Override
+    public void configure(AuthorizationServerEndpointsConfigurer endpoints)
+            throws Exception {
+
+        endpoints.tokenStore(tokenStore())
+                .authenticationManager(authenticationManager);
+
+    }
+
+    @Value("${aleph.oauth.uri}")
+    private String oauthHost;
+
+    @Override
+    public void configure(AuthorizationServerSecurityConfigurer oauthServer)
+            throws Exception {
+        OAuth2AuthenticationEntryPoint ep = new OAuth2AuthenticationEntryPoint();
+        ep.setExceptionRenderer(new CustomDefaultOAuth2ExceptionRenderer(oauthHost));
+        oauthServer.tokenKeyAccess("permitAll()").checkTokenAccess(
+                "isAuthenticated()")
+                .authenticationEntryPoint(ep).allowFormAuthenticationForClients();
+    }
+
+}

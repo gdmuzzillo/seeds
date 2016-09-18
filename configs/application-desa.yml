@@ -1,0 +1,54 @@
+
+--
+apps:
+  port:
+    oauth: 18080
+    config: 18190
+    commondb: 3306
+
+  db:
+    host: oauthdb.cijkpfppva6x.us-east-1.rds.amazonaws.com
+    dbname: oauthdb 
+
+  oauth:
+    context-path: /oauth
+    uri: http://localhost:${aleph.port.oauth}${aleph.oauth.context-path}
+    redis: 
+      enabled: false
+      host: localhost
+      port: 6379
+---
+ldap:
+  url: ldap://localhost:389
+  mocked: true
+  host: amazonaws.com
+
+---
+spring:
+  datasource:
+    url: jdbc:mysql://oauthdb.cijkpfppva6x.us-east-1.rds.amazonaws.com:3306/oauthdb
+    username: oauthdba
+    password: oauth2016
+    driver-class-name: com.mysql.jdbc.Driver
+    pool-name: SpringBootHikariCP
+    type: com.zaxxer.hikari.HikariDataSource
+    leakDetectionThreshold: 2500
+    maximumPoolSize: 30
+    minimumIdle: 5
+
+  jpa:
+    hibernate.ddl-auto: none
+    show-sql: false
+    database-platform: org.hibernate.dialect.MySQLDialect
+
+security:
+    oauth2:
+       resource:
+            user-info-uri: ${apps.oauth.uri}/user
+            token-info-uri: ${apps.oauth.uri}/oauth/check_token
+
+---
+management:
+  security:
+    enabled: false
+  context-path: /manage

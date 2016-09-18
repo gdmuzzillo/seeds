@@ -1,0 +1,13 @@
+package io.redbee.boot.oauth.model;
+
+import org.springframework.security.core.GrantedAuthority;
+
+public class OauthAuthority implements GrantedAuthority {
+
+	@Override
+	public String getAuthority() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

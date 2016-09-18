@@ -1,0 +1,5 @@
+package io.redbee.boot.oauth.authorities.populators;
+
+public class JdbcAuthoritiesPopulator {
+
+}

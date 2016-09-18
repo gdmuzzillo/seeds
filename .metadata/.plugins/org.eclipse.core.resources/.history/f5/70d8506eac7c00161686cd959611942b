@@ -1,0 +1,5 @@
+package io.redbee.boot.oauth.config;
+
+public class LoginConfig {
+
+}

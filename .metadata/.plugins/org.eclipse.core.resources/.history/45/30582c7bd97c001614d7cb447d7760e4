@@ -1,0 +1,32 @@
+spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.session.SessionAutoConfiguration
+
+ldap.url=ldap://localhost:389
+ldap.mocked=false
+ldap.host=buenosaires.gob.ar
+oauth.context-path=/oauth
+oauth.port=18080
+oauth.uri=http://argalephdockerd1:${oauth.port}${oauth.context-path}
+oauth.redis.enabled=false
+oauth.redis.host=localhost
+oauth.redis.port=6379
+
+
+spring.datasource.url: jdbc:oracle:thin:@argalephdbd1.turner.com:1521/ALEPHDBD1 
+spring.datasource.username: proxy
+spring.datasource.password: proxy
+spring.datasource.driver-class-name: oracle.jdbc.driver.OracleDriver
+spring.datasource.hikari.pool-name: SpringBootHikariCP
+spring.datasource.type: com.zaxxer.hikari.HikariDataSource
+spring.datasource.hikari.leakDetectionThreshold: 2500
+spring.datasource.hikari.maximumPoolSize: 30
+spring.datasource.hikari.minimumIdle: 5
+
+
+
+spring.jpa.hibernate.ddl-auto: none
+spring.jpa.show-sql: false
+spring.jpa.database-platform: org.hibernate.dialect.Oracle9Dialect
+
+
+security.oauth2.resource.user-info-uri=${oauth.uri}/user
+

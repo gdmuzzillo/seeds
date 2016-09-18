@@ -1,0 +1,10 @@
+spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.session.SessionAutoConfiguration
+
+ldap.url=ldap://argtbsdc01.turner.com:389
+ldap.mocked=false
+ldap.host=buenosaires.gob.ar
+oauth.context-path=/oauth
+oauth.uri=http://argalephdockerd1:${aleph.port.oauth}${aleph.oauth.context-path}
+oauth.redis.enabled=false
+oauth.redis.host=localhost
+oauth.redis.port=6379

@@ -1,0 +1,5 @@
+spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.session.SessionAutoConfiguration
+
+ldap.url=ldap://argtbsdc01.turner.com:389
+ldap.mocked=false
+ldap.host=buenosaires.gob.ar

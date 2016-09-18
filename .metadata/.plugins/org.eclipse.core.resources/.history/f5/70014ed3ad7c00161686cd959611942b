@@ -1,0 +1,9 @@
+package io.redbee.boot.oauth.handlers;
+
+import org.springframework.security.web.authentication.AbstractAuthenticationTargetUrlRequestHandler;
+
+public class CustomLogoutSucessHandler extends AbstractAuthenticationTargetUrlRequestHandler {
+	
+	
+
+}

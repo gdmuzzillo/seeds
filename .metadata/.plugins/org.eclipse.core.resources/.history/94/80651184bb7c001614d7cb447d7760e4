@@ -1,0 +1,8 @@
+package io.redbee.boot.oauth.config;
+
+public enum AccountStatus {
+
+	Valid,
+	Blocked,
+	Terminated
+}

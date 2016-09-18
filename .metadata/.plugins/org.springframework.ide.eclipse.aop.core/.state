@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aop-reference-model>
+<aop-project name="boot-oauth2"/>
+<aop-project name="boot-app"/>
+<aop-project name="cloud-config"/>
+</aop-reference-model>

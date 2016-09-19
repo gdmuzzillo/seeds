@@ -22,7 +22,7 @@ public class JdbcUserDetailsService implements UserDetailsContextMapper {
 	
 	 private static final Logger LOGGER = LoggerFactory.getLogger(JdbcUserDetailsService.class);
 	 
-	 private static final String USER_DETAILS_QUERY = "SELECT * FROM USERS US JOIN USERDETAILS u ON ru.USR_NOMBRE = u.USR_NOMBRE WHERE ru.USR_NOMBRE = ? AND u.USR_ESTADO <> 2";
+	 private static final String USER_DETAILS_QUERY = "SELECT * FROM USER ru JOIN USERSDETAILS u ON ru.USR_NOMBRE = u.USR_NOMBRE WHERE ru.USR_NOMBRE = ? AND ru.USR_ESTADO <> 2";
 	    private static final String KEY_ENCRYPT_RAW_COLUMN = "KEY_ENCRYPT_RAW";
 	    private static final String PASS_ENCRYPT_RAW_COLUMN = "PASS_ENCRIPT_RAW";
 	    private static final String USR_ESTADO_COLUMN ="USR_ESTADO";

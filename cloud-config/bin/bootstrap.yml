@@ -1,14 +1,14 @@
 spring:
   application:
-    name: cloud-config
+    name: apps-cloud-config
   cloud:
     config:
-      env: dev
+      env: develop
       server:
         bootstrap: true
         prefix: /config
         git:
-          uri: file:/home/gustavo/projects/seeds/configs
+          uri: file:/home/gustavo/projects/POCS/base-cloud-configs
           username: gdmuzzillo
           password: Aragorn37365#
 encrypt:

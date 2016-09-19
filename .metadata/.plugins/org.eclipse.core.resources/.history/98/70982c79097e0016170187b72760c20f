@@ -1,0 +1,107 @@
+package io.redbee.boot.oauth.config;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.config.environment.Environment;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
+import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
+import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
+import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint;
+import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
+import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
+import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
+
+import io.redbee.boot.oauth.rederer.CustomDefaultOAuth2ExceptionRenderer;
+
+@Configuration
+@EnableAuthorizationServer
+public class OAuth2AuthorizationConfig extends
+AuthorizationServerConfigurerAdapter {
+	
+    @Value("${apps.oauth.redis.enabled}")
+    private Boolean redisEnabled;
+
+    @Value("${apps.oauth.redis.host}")
+    private String redisHost;
+
+    @Value("${apps.oauth.redis.port}")
+    private int redisPort;
+
+
+    @Bean
+    JedisConnectionFactory jedisConnectionFactory() {
+        JedisConnectionFactory factory = new JedisConnectionFactory();
+        factory.setHostName(redisHost);
+        factory.setPort(redisPort);
+        factory.setUsePool(true);
+        return factory;
+    }
+
+    @Autowired
+    Environment environment;
+
+    @Bean
+    public TokenStore tokenStore() {
+        TokenStore result;
+        if (redisEnabled){
+            result = new RedisTokenStore(jedisConnectionFactory());
+        } else {
+            result = new InMemoryTokenStore();
+        }
+
+        return result;
+    }
+
+    @Autowired
+    private static AuthenticationManager authenticationManager;
+
+    @Override
+    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+        clients.inMemory()
+                .withClient("salary")
+                .secret("salary").scopes("home")
+                .autoApprove(true)
+                .authorizedGrantTypes("authorization_code", "implicit", "refresh_token", "password");
+    }
+
+    @Bean
+    @Primary
+    public DefaultTokenServices tokenServices() {
+        DefaultTokenServices tokenServices = new DefaultTokenServices();
+        tokenServices.setSupportRefreshToken(true);
+        tokenServices.setTokenStore(tokenStore());
+        return tokenServices;
+    }
+
+
+    @Override
+    public void configure(AuthorizationServerEndpointsConfigurer endpoints)
+            throws Exception {
+
+        endpoints.tokenStore(tokenStore())
+                .authenticationManager(authenticationManager);
+
+    }
+
+    @Value("${apps.oauth.uri}")
+    private String oauthHost;
+
+    @Override
+    public void configure(AuthorizationServerSecurityConfigurer oauthServer)
+            throws Exception {
+        OAuth2AuthenticationEntryPoint ep = new OAuth2AuthenticationEntryPoint();
+        ep.setExceptionRenderer(new CustomDefaultOAuth2ExceptionRenderer(oauthHost));
+        oauthServer.tokenKeyAccess("permitAll()").checkTokenAccess(
+                "isAuthenticated()")
+                .authenticationEntryPoint(ep).allowFormAuthenticationForClients();
+    }
+
+}

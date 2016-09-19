@@ -8,10 +8,14 @@
 </listAttribute>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="io.redbee.cloud.config.CloudConfigApplication"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="cloud-config"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Djava.security.egd=file:/dev/./urandom "/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Djava.security.egd=file:/dev/./urandom  -Dspring.profiles.active=desa"/>
 <stringAttribute key="process_factory_id" value="org.springframework.ide.eclipse.boot.launch.process.BootProcessFactory"/>
+<booleanAttribute key="spring.boot.ansi.console" value="true"/>
+<booleanAttribute key="spring.boot.dash.hidden" value="false"/>
+<booleanAttribute key="spring.boot.debug.enable" value="false"/>
 <booleanAttribute key="spring.boot.lifecycle.enable" value="true"/>
 <stringAttribute key="spring.boot.lifecycle.termination.timeout" value="15000"/>
 <booleanAttribute key="spring.boot.livebean.enable" value="true"/>
 <stringAttribute key="spring.boot.livebean.port" value="0"/>
+<stringAttribute key="spring.boot.profile" value=""/>
 </launchConfiguration>

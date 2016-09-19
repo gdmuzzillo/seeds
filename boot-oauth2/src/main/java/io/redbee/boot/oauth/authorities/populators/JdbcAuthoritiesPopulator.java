@@ -19,9 +19,9 @@ import io.redbee.boot.oauth.model.OauthAuthority;
 
 @Component
 public class JdbcAuthoritiesPopulator  implements LdapAuthoritiesPopulator {
-	 private static final String USERNAME_QUERY = "SELECT US.USR_NOMBRE FROM USERS US WHERE US.USR_NOMBRE_RED = ?";
-	    private static final String RL_BY_USER_QUERY = "SELECT RL.ROL_CODIGO, RL.TNT_CODIGO FROM ROLES RL, USERS US  WHERE US.USR_NOMBRE = ? AND US.USR_NOMBRE = RL.USR_NOMBRE AND US.USR_ESTADO <> 2 ORDER BY TNT_CODIGO ASC";
-	    public static final String RL_CODIGO_COLUMN = "RL_CODIGO";
+	 private static final String USERNAME_QUERY = "SELECT US.USR_NOMBRE FROM USER US WHERE US.USR_NOMBRE = ?";
+	    private static final String RL_BY_USER_QUERY = "SELECT RL.ROL_CODIGO, RL.TNT_CODIGO FROM ROLES RL, USER US  WHERE US.USR_NOMBRE = ? AND US.USR_NOMBRE = RL.USR_NOMBRE AND US.USR_ESTADO <> 2 ORDER BY TNT_CODIGO ASC";
+	    public static final String RL_CODIGO_COLUMN = "ROL_CODIGO";
 	    public static final String TNT_CODIGO_COLUMN = "TNT_CODIGO";
 	    private JdbcTemplate jdbcTemplate;
 

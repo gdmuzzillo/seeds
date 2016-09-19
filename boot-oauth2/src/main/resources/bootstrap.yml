@@ -1,7 +1,7 @@
 spring:
   application:
-    name: oauth
+    name: apps-oauth
   cloud:
     config:
-      env: develop
+      env: desa
       uri: http://localhost:18190/cloud-config/config
